@@ -1,10 +1,5 @@
 package setting
 
-import (
-	"github.com/go-ini/ini"
-	"log"
-	"time"
-)
 
 // https://eddycjy.com/posts/go/gin/2018-02-11-api-01/
 
@@ -16,7 +11,7 @@ import (
 
 
 var (
-	cfg *ini.File
+	Cfg *ini.File
 	RunMode string
 	HTTPPort int
 	ReadTimeout time.Duration
@@ -38,7 +33,7 @@ func init(){
 }
 
 func LoadBase() {
-	RunMode = Cfg.Section("").key("RUN_MODE").MustString("debug")
+	RunMode = Cfg.Section("").Key("RUN_MODE").MustString("debug")
 }
 
 
@@ -48,15 +43,15 @@ func LoadServer() {
 		log.Fatalf("Fail to get section 'server':%v", err)
 	}
 	HTTPPort = sec.Key("HTTP_PORT").MustInt(8000)
-	ReadTimeout = time.Duration(sec.key("READ_TIMEOUT").MustInt(60)) * time.Second
-	WRITE_TIMEOUT = time.Duration(sec.key("WRITE_TIMEOUT").MustInt(60)) * time.Second
+	ReadTimeout = time.Duration(sec.Key("READ_TIMEOUT").MustInt(60)) * time.Second
+	WriteTimeout = time.Duration(sec.Key("WRITE_TIMEOUT").MustInt(60)) * time.Second
 }
 
 func LoadApp() {
-	sec, err := Cfg.GetSecion("app")
+	sec, err := Cfg.GetSection("app")
 	if err != nil{
 		log.Fatalf("Fail to get section'app':%v", err)
 	}
-	JwtSecret = sec.key("JWT_SECRET").MustString("!@*#)!@U#@*!@!)")
-	PageSize = sec.key("PAGE_SIZE").MustInt(10)
+	JwtSecret = sec.Key("JWT_SECRET").MustString("!@*#)!@U#@*!@!)")
+	PageSize = sec.Key("PAGE_SIZE").MustInt(10)
 }
