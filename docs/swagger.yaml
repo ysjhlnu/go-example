@@ -201,4 +201,28 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: 修改文章标签
+  /auth:
+    get:
+      description: 用户登录接口
+      parameters:
+      - description: Username
+        in: query
+        name: username
+        type: string
+      - description: Password
+        in: query
+        name: password
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/gin.H'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: 登录接口
 swagger: "2.0"

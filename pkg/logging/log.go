@@ -15,7 +15,6 @@ var (
 
 	DefaultPrefix = ""
 	DefaultCallerDepth = 2
-
 	logger *log.Logger
 	logPrefix = ""
 	levelFlags = []string{"DEBUG", "INFO", "WARN", "ERROR", "FATAL"}
@@ -29,6 +28,19 @@ const (
 	FATAL
 )
 
+func Setup() {
+	var err error
+	filePath := getLogFilePath()
+	fileName := getLogFileName()
+	F, err = openLogFile(fileName, filePath)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	logger = log.New(F, DefaultPrefix, log.LstdFlags)
+}
+
+/*
 func init(){
 	filePath := getLogFileFullPath()
 	F = openLogFile(filePath)
@@ -37,6 +49,7 @@ func init(){
 	// log.New：创建一个新的日志记录器。out定义要写入日志数据的IO句柄。
 	//prefix定义每个生成的日志行的开头。 flag定义了日志记录属性
 }
+ */
 
 func Debug(v ...interface{}) {
 	setPrefix(DEBUG)

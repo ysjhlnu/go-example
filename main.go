@@ -1,11 +1,12 @@
 package main
 
 import (
-	"context"
 	"fmt"
+	"go-gin-example/models"
 	"go-gin-example/pkg/logging"
 	"go-gin-example/pkg/setting"
 	"go-gin-example/routers"
+	"golang.org/x/net/context"
 	"net/http"
 	"os"
 	"os/signal"
@@ -13,35 +14,43 @@ import (
 )
 
 func main() {
-	//router := gin.Default()	// 创建一个路由Handlers,可以后期绑定各类的路由规则和函数、中间件等
-	//router.GET("/test", func(c *gin.Context) {		// Context是gin中的上下文，它允许我们在中间件之间传递变量、管理流、验证 JSON 请求、响应 JSON 请求等
-	//	c.JSON(200, gin.H{
-	//		"message": "test",
-	//	})
-	//})
+	/*
+	router := gin.Default()	// 创建一个路由Handlers,可以后期绑定各类的路由规则和函数、中间件等
+	router.GET("/test", func(c *gin.Context) {		// Context是gin中的上下文，它允许我们在中间件之间传递变量、管理流、验证 JSON 请求、响应 JSON 请求等
+		c.JSON(200, gin.H{
+			"message": "test",
+		})
+	})
+*/
 
-	//endless.DefaultReadTimeOut = setting.ReadTimeout
-	//endless.DefaultWriteTimeOut = setting.WriteTimeout
-	//endless.DefaultMaxHeaderBytes = 1 << 20
-	//endpoint := fmt.Sprintf(":%d", setting.HTTPPort)
-	//
-	//server := endless.NewServer(endpoint, routers.InitRouter())
-	//server.BeforeBegin = func(add string) {
-	//	logging.Info("Actual pid is %d", syscall.Getpid())
-	//}
-	//
-	//err := server.ListenAndServe()
-	//if err != nil {
-	//	logging.Info("server err: %v", err)
-	//}
+	setting.Setup()
+	models.Setup()
+	logging.Setup()
+/*
+	endless.DefaultReadTimeOut = setting.ServerSetting.ReadTimeout
+	endless.DefaultWriteTimeOut = setting.ServerSetting.WriteTimeout
+	endless.DefaultMaxHeaderBytes = 1 << 20
+	endpoint := fmt.Sprintf(":%d", setting.ServerSetting.HttpPort)
+
+	server := endless.NewServer(endpoint, routers.InitRouter())
+	server.BeforeBegin = func(add string) {
+		logging.Info("Actual pid is %d", syscall.Getpid())
+	}
+
+	err := server.ListenAndServe()
+	if err != nil {
+		logging.Info("server err: %v", err)
+	}
+*/
+
 
 	router := routers.InitRouter()
 
 	s := &http.Server{
-		Addr: fmt.Sprintf(":%d",setting.HTTPPort),
+		Addr: fmt.Sprintf(":%d",setting.ServerSetting.HttpPort),
 		Handler: router,
-		ReadTimeout: setting.ReadTimeout,
-		WriteTimeout: setting.WriteTimeout,
+		ReadTimeout: setting.ServerSetting.ReadTimeout,
+		WriteTimeout: setting.ServerSetting.WriteTimeout,
 		MaxHeaderBytes: 1 << 20,
 	}
 
@@ -66,4 +75,5 @@ func main() {
 	 logging.Info("Server exiting")
 
 	//s.ListenAndServe()
+
 }
