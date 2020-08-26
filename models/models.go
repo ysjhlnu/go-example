@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"go-gin-example/pkg/logging"
 	"go-gin-example/pkg/setting"
 	"time"
 )
@@ -26,15 +25,27 @@ type Model struct {
 // Setup initializes the database instance
 func Setup() {
 	var err error
-	db, err = gorm.Open(setting.DatabaseSetting.Type,
+	result := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+			//setting.DatabaseSetting.User,
+			"root",
+			"root",
+			//setting.DatabaseSetting.Password,
+			setting.DatabaseSetting.Host,
+			setting.DatabaseSetting.Name)
+
+	fmt.Println("eeeee:", result)
+	db, err = gorm.Open("mysql",
 		fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-		setting.DatabaseSetting.User,
-		setting.DatabaseSetting.Password,
-		setting.DatabaseSetting.Host,
-		setting.DatabaseSetting.Name))
+		//setting.DatabaseSetting.User,
+		"root",
+		"root",
+		//setting.DatabaseSetting.Password,
+		"127.0.0.1:3306",
+		"blog"))
 
 	if err != nil {
-		logging.Error(err)
+		//logging.Error(err)
+		fmt.Println(err)
 	}
 
 	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"go-gin-example/models"
 	"go-gin-example/pkg/logging"
 	"go-gin-example/pkg/setting"
@@ -47,7 +46,8 @@ func main() {
 	router := routers.InitRouter()
 
 	s := &http.Server{
-		Addr: fmt.Sprintf(":%d",setting.ServerSetting.HttpPort),
+		//Addr: fmt.Sprintf(":%d",setting.ServerSetting.HttpPort),
+		Addr: ":8000",
 		Handler: router,
 		ReadTimeout: setting.ServerSetting.ReadTimeout,
 		WriteTimeout: setting.ServerSetting.WriteTimeout,

@@ -74,7 +74,7 @@ func Error(v ...interface{}) {
 
 func Fatal(v ...interface{}) {
 	setPrefix(FATAL)
-	logger.Fatalln(v)
+	logger.Println(v)
 }
 
 

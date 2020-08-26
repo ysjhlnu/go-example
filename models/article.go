@@ -55,10 +55,14 @@ Preload就是一个预加载器，它会执行两条 SQL，分别是SELECT * FRO
 那么在查询出结构后，gorm内部处理对应的映射逻辑，将其填充到Article的Tag中，会特别方便，并且避免了循环查询
  */
 
-func GetArticle(id int) (article Article) {
-	db.Where("id = ？", id).First(&article)
-	db.Model(&article).Related(&article.Tag)
-	return
+func GetArticle(id int) ( *Article,  error) {
+	var article Article
+	err := db.Where("id=? AND delted_on = ? ", id, 0).First(&article).Related(&article.Tag).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, err
+	}
+	return &article, nil
+
 }
 
 /*
