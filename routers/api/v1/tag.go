@@ -5,9 +5,13 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/unknwon/com"
 	"go-gin-example/models"
+	"go-gin-example/pkg/app"
 	"go-gin-example/pkg/e"
+	"go-gin-example/pkg/export"
+	"go-gin-example/pkg/logging"
 	"go-gin-example/pkg/setting"
 	"go-gin-example/pkg/util"
+	"go-gin-example/service/tag_service"
 	"net/http"
 )
 
@@ -36,7 +40,7 @@ func GetTags(c *gin.Context) {
 
 	code := e.SUCCESS
 
-	data["lists"] = models.GetTags(util.GetPage(c), setting.AppSetting.PageSize, maps)
+	data["lists"],_ = models.GetTags(util.GetPage(c), setting.AppSetting.PageSize, maps)
 	data["total"]  = models.GetTagTotal(maps)
 
 	c.JSON(http.StatusOK, gin.H{
@@ -164,4 +168,49 @@ func DeleteTag(c *gin.Context) {
 		"msg": e.GetMsg(code),
 		"data": make(map[string]string),
 	})
+}
+
+
+func ExportTag(c *gin.Context) {
+	appG := app.Gin{C: c}
+	name := c.PostForm("name")
+	state := -1
+	if arg := c.PostForm("state"); arg != "" {
+		state = com.StrTo(arg).MustInt()
+	}
+
+	tagService := tag_service.Tag{
+		Name: name,
+		State: state,
+	}
+
+	filename, err := tagService.Export()
+	if err != nil {
+		appG.Response(http.StatusOK, e.ERROR_EXPORT_TAG_FAIL, nil)
+		return
+	}
+
+	appG.Response(http.StatusOK, e.SUCCESS, map[string]string {
+		"export_url": export.GetExcelFullUrl(filename),
+		"export_save_url": export.GetExcelPath() + filename,
+	})
+}
+
+func ImportTag(c *gin.Context) {
+	appG := app.Gin{C: c}
+	file, _, err := c.Request.FormFile("file")
+	if err != nil {
+		logging.Warn(err)
+		appG.Response(http.StatusOK, e.ERROR, nil)
+		return
+	}
+
+	tagService := tag_service.Tag{}
+	err = tagService.Import(file)
+	if err != nil {
+		logging.Warn(err)
+		appG.Response(http.StatusOK, e.ERROR_IMPORT_TAG_FAIL, nil)
+		return
+	}
+	appG.Response(http.StatusOK, e.SUCCESS, nil)
 }

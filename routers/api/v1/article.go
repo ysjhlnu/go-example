@@ -18,6 +18,7 @@ import (
 	"go-gin-example/pkg/setting"
 	"go-gin-example/pkg/util"
     "go-gin-example/pkg/logging"
+	"go-gin-example/service/article_service"
 	"net/http"
 )
 
@@ -260,3 +261,5 @@ func DeleteArticle(c * gin.Context) {
 		"data": make(map[string]string),
 	})
 }
+
+

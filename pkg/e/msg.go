@@ -17,6 +17,9 @@ var MsgFlags = map[int]string {
 	ERROR_UPLOAD_CHECK_IMAGE_FORMAT: "校验图片错误，图片格式或大小有问题",
 	ERROR_UPLOAD_CHECK_IMAGE_FATAL: "检查图片失败",
 	ERROR_UPLOAD_SAVE_IMAGE_FATAL: "图片保存失败",
+
+	ERROR_IMPORT_TAG_FAIL: "导入标签失败",
+	ERROR_EXPORT_TAG_FAIL: "导入标签失败",
 }
 
 

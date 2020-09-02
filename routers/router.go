@@ -6,9 +6,11 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	_ "go-gin-example/docs"
 	"go-gin-example/middleware/jwt"
+	"go-gin-example/pkg/export"
 	"go-gin-example/pkg/setting"
 	"go-gin-example/routers/api"
 	v1 "go-gin-example/routers/api/v1"
+	"net/http"
 )
 
 func InitRouter() *gin.Engine {
@@ -51,6 +53,8 @@ func InitRouter() *gin.Engine {
 	//}
 
 	{
+		r.POST("/tags/export", v1.ExportTag)
+		r.POST("/tags/import", v1.ImportTag)
 		tags := apiv1.Group("/tags")
 		{
 			tags.GET("",v1.GetTags)
@@ -58,6 +62,7 @@ func InitRouter() *gin.Engine {
 			tags.POST("", v1.AddTag)
 			tags.DELETE("/:id", v1.DeleteTag)
 		}
+		r.StaticFS("/export", http.Dir(export.GetExcelFullPath()))
 	}
 
 	//r.GET("/test", func(c *gin.Context) {

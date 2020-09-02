@@ -1,0 +1,4 @@
+[WARN][tag.go:203]2020/09/02 15:39:58 [http: no such file]
+[WARN][tag.go:203]2020/09/02 15:44:44 [request Content-Type isn't multipart/form-data]
+[INFO][main.go:67]2020/09/02 15:49:59 [Shutdown Server...]
+[INFO][main.go:75]2020/09/02 15:49:59 [Server exiting]

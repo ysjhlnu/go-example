@@ -29,7 +29,7 @@ func (t *Tag) BeforeUpdate(scope *gorm.Scope) error {
 }
 
 
-func GetTags(pageNum int, pageSize int, maps interface{}) (tags []Tag) {
+func GetTags(pageNum int, pageSize int, maps interface{}) (tags []Tag, err error) {
 	db.Where(maps).Offset(pageNum).Limit(pageSize).Find(&tags)
 	return
 }

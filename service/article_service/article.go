@@ -1,12 +1,28 @@
-package service
+package article_service
 
 import (
 	"encoding/json"
 	"go-gin-example/models"
 	"go-gin-example/pkg/gredis"
-	"go-gin-example/pkg/logging"
 	"go-gin-example/service/cache_service"
+	"go-gin-example/pkg/logging"
 )
+
+type Article struct {
+	ID            int
+	TagID         int
+	Title         string
+	Desc          string
+	Content       string
+	CoverImageUrl string
+	State         int
+	CreatedBy     string
+	ModifiedBy    string
+
+	PageNum  int
+	PageSize int
+}
+
 
 func (a *Article) Get() (*models.Article, error) {
 	var cacheArticle *models.Article
@@ -22,11 +38,15 @@ func (a *Article) Get() (*models.Article, error) {
 			return cacheArticle, nil
 		}
 	}
-	article, err := models.GetArticles(a.ID)
+	article, err := models.GetArticle(a.ID)
 	if err != nil {
 		return nil, err
 	}
 
 	gredis.Set(key, article, 3600)
 	return article, nil
+}
+
+func (a *Article) ExistByID() (bool, error) {
+	return models.ExistArticleByID(a.ID), nil
 }
