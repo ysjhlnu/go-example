@@ -7,6 +7,7 @@ import (
 	_ "go-gin-example/docs"
 	"go-gin-example/middleware/jwt"
 	"go-gin-example/pkg/export"
+	"go-gin-example/pkg/qrcode"
 	"go-gin-example/pkg/setting"
 	"go-gin-example/routers/api"
 	v1 "go-gin-example/routers/api/v1"
@@ -30,6 +31,7 @@ func InitRouter() *gin.Engine {
 	// 注册路由
 	apiv1 := r.Group("/api/v1")
 	apiv1.Use(jwt.JWT())
+	apiv1.POST("/articles/poster/generate", v1.GenerateArticlePoster)
 	//{
 	//	// 获取标签列表
 	//	apiv1.GET("/tags", v1.GetTags)
@@ -63,6 +65,7 @@ func InitRouter() *gin.Engine {
 			tags.DELETE("/:id", v1.DeleteTag)
 		}
 		r.StaticFS("/export", http.Dir(export.GetExcelFullPath()))
+		r.StaticFS("/qrcode", http.Dir(qrcode.GetQrCodeFullPath()))
 	}
 
 	//r.GET("/test", func(c *gin.Context) {

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"go-gin-example/pkg/setting"
 	"time"
 )
 
@@ -30,8 +29,10 @@ func Setup() {
 			"root",
 			"root",
 			//setting.DatabaseSetting.Password,
-			setting.DatabaseSetting.Host,
-			setting.DatabaseSetting.Name)
+			//setting.DatabaseSetting.Host,
+			"127.0.0.1",
+			//setting.DatabaseSetting.Name)
+			"blog")
 
 	fmt.Println("eeeee:", result)
 	db, err = gorm.Open("mysql",
@@ -49,7 +50,8 @@ func Setup() {
 	}
 
 	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
-		return setting.DatabaseSetting.TablePrefix + defaultTableName
+		//return setting.DatabaseSetting.TablePrefix + defaultTableName
+		return "blog_" + defaultTableName
 	}
 
 	db.SingularTable(true)

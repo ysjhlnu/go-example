@@ -342,6 +342,50 @@
                     }
                 }
             }
+        },
+        "/tags/export": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "导出标签表格",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/tags/import": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "导入标签表格",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {

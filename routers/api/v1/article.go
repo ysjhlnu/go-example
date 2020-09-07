@@ -10,11 +10,13 @@ package v1
 
 import (
 	"github.com/astaxie/beego/validation"
+	"github.com/boombuler/barcode/qr"
 	"github.com/gin-gonic/gin"
 	"github.com/unknwon/com"
 	"go-gin-example/models"
 	"go-gin-example/pkg/app"
 	"go-gin-example/pkg/e"
+	"go-gin-example/pkg/qrcode"
 	"go-gin-example/pkg/setting"
 	"go-gin-example/pkg/util"
     "go-gin-example/pkg/logging"
@@ -47,7 +49,7 @@ func GetArticle(c *gin.Context) {
 	articleService := article_service.Article{ID:id}
 	exists, err := articleService.ExistByID()
 	if err != nil {
-		appG.Response(http.StatusOK, e.ERROR_CHECK_EXIST_ARTICLE_FATAL, nil)
+		appG.Response(http.StatusOK, e.ERROR_CHECK_EXIST_ARTICLE_FAIL, nil)
 		return
 	}
 
@@ -262,4 +264,60 @@ func DeleteArticle(c * gin.Context) {
 	})
 }
 
+
+const (
+	QRCODE_URL = "https://github.com/EDDYCJY/blog#gin%E7%B3%BB%E5%88%97%E7%9B%AE%E5%BD%95"
+)
+
+func GenerateArticlePoster(c *gin.Context) {
+	appG := app.Gin{c}
+	article := &article_service.Article{}
+	qr := qrcode.NewQrCode(QRCODE_URL, 300, 300, qr.M, qr.Auto) // 写死gin系列路径
+	posterName := article_service.GetPosterFlag() + "_" + qrcode.GetQrCodeFileName(qr.URL)
+	articlePoster := article_service.NewArticlePoster(posterName, article, qr)
+	articlePosterBgService := article_service.NewArticlePosterBg(
+		"bg.jpg",
+		articlePoster,
+		&article_service.Rect{
+			X0: 0,
+			Y0: 0,
+			X1: 550,
+			Y1: 700,
+		},
+		&article_service.Pt{
+			X: 125,
+			Y: 298,
+		},
+	)
+
+	_, filePath, err := articlePosterBgService.Generate()
+	if err != nil {
+		appG.Response(http.StatusOK, e.ERROR_GEN_ARTICLE_POSTER_FAIL, nil)
+		return
+	}
+
+	appG.Response(http.StatusOK, e.SUCCESS, map[string]string{
+		"poster_url": qrcode.GetQrCodeFullUrl(posterName),
+		"poster_save_url": filePath + posterName,
+	})
+	//path := qrcode.GetQrCodeFullPath()
+	//_, _, err := qrc.Encode(path)
+	//if err != nil {
+	//	appG.Response(http.StatusOK, e.ERROR, nil)
+	//	return
+	//}
+/*
+   这块涉及到大量知识，强烈建议阅读下，如下：
+
+   image.Rect
+   image.Pt
+   image.NewRGBA
+   jpeg.Encode
+   jpeg.Decode
+   draw.Op
+   draw.Draw
+   go-imagedraw-package
+ */
+
+}
 

@@ -171,6 +171,11 @@ func DeleteTag(c *gin.Context) {
 }
 
 
+// @Summary 导出标签表格
+// @Produce json
+// @Success 200 {object} gin.H
+// @Failure 500 {object} gin.H
+// @Router /tags/export [get]
 func ExportTag(c *gin.Context) {
 	appG := app.Gin{C: c}
 	name := c.PostForm("name")
@@ -196,6 +201,11 @@ func ExportTag(c *gin.Context) {
 	})
 }
 
+// @Summary 导入标签表格
+// @Produce json
+// @Success 200 {object} gin.H
+// @Failure 500 {object} gin.H
+// @Router /tags/import [post]
 func ImportTag(c *gin.Context) {
 	appG := app.Gin{C: c}
 	file, _, err := c.Request.FormFile("file")
