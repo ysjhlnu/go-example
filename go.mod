@@ -5,17 +5,18 @@ go 1.14
 require (
 	cloud.google.com/go/logging v1.1.0
 	github.com/360EntSecGroup-Skylar/excelize v1.4.1
+	github.com/EDDYCJY/go-gin-example v0.0.0-20200505102242-63963976dee0
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/astaxie/beego v1.12.2
-	github.com/boombuler/barcode v1.0.0
+	github.com/boombuler/barcode v1.0.1-0.20180315051053-3c06908149f7
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-ini/ini v1.57.0
 	github.com/go-openapi/spec v0.19.9 // indirect
 	github.com/go-openapi/swag v0.19.9 // indirect
 	github.com/go-playground/validator/v10 v10.3.0 // indirect
-	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
-	github.com/gomodule/redigo v2.0.0+incompatible
+	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
+	github.com/gomodule/redigo v2.0.1-0.20180401191855-9352ab68be13+incompatible
 	github.com/googleapis/gax-go v1.0.3 // indirect
 	github.com/jinzhu/gorm v1.9.16
 	github.com/mailru/easyjson v0.7.6 // indirect

@@ -3,7 +3,6 @@ package setting
 import (
 	"log"
 	"time"
-
 	"github.com/go-ini/ini"
 )
 
@@ -20,6 +19,7 @@ type App struct {
 	ImagePrefixUrl string
 
 	ExportSavePath string
+
 	QrCodeSavePath string
 	FontSavePath   string
 

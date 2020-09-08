@@ -135,6 +135,25 @@ func (a *ArticlePosterBg) Generate() (string, string, error) {
 		draw.Draw(jpg, jpg.Bounds(), qrImage, qrImage.Bounds().Min.Sub(image.Pt(a.Pt.X, a.Pt.Y)),draw.Over)
 
 		jpeg.Encode(mergedF, jpg, nil)
+
+		err = a.DrawPoster(&DrawText{
+			JPG: jpg,
+			Merged: mergedF,
+
+			Title:  "Golang gin",
+			X0: 80,
+			Y0: 160,
+			Size0: 42,
+
+			SubTitle: "---ysjhlnu",
+			X1: 320,
+			Y1: 220,
+			Size1: 36,
+		}, "msyhbd.ttc")
+
+		if err != nil {
+			return "", "", err
+		}
 	}
 
 	return fileName, path, nil
@@ -180,13 +199,13 @@ func (a *ArticlePosterBg) DrawPoster(d *DrawText, fontName string) error {
 	fc.SetSrc(image.Black)
 
 	pt := freetype.Pt(d.X0, d.Y0)
-	_, err := fc.DrawString(d.Title, pt)
+	_, err = fc.DrawString(d.Title, pt)
 	if err != nil {
 		return err
 	}
 
 	fc.SetFontSize(d.Size1)
-	_, err := fc.DrawString(d.SubTitle, freetype.Pt(d.X1, d.Y1))
+	_, err = fc.DrawString(d.SubTitle, freetype.Pt(d.X1, d.Y1))
 	if err != nil {
 		return err
 	}

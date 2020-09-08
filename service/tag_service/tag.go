@@ -71,7 +71,7 @@ func (t *Tag) Export() (string, error) {
 		return "", err
 	}
 
-	titles := []string{"ID", "名称","创建人","创建时间","修改人","修改时间"}
+	titles := []string{"ID", "名称", "创建人", "创建时间", "修改人", "修改时间"}
 	row := sheet.AddRow()
 
 	var cell *xlsx.Cell
